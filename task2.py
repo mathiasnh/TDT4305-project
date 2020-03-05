@@ -15,7 +15,7 @@ def time_stamp(val):
 conf = SparkConf().setAppName("YelpReviews").setMaster("local")
 sc = SparkContext(conf=conf)
 
-folder_name = "./data/"
+folder_name = "./results/"
 
 input_file_name = "yelp_top_reviewers_with_reviews.csv"
 
