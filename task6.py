@@ -16,7 +16,10 @@ businesses_df = sqlContext.read.format("com.databricks.spark.csv").option("heade
 top_reviewers_df = sqlContext.read.format("com.databricks.spark.csv").option("header", "true").option("inferSchema", "true").option("delimiter", '\t').load(folder_name + input_file_name_2)
 friendships_df = sqlContext.read.format("com.databricks.spark.csv").option("header", "true").option("inferSchema", "true").option("delimiter", ',').load(folder_name + input_file_name_3)
 
-#joined_df = top_reviewers_df.join(businesses_df, col("top_reviewers_df.business_id") == col("businesses_df.business_id"), "inner")
 joined_df = top_reviewers_df.join(businesses_df, on=['business_id'], how='inner')
 
-joined_df.show()
+joined_df.show() #6a
+joined_df.createOrReplaceTempView('reviews') #6b
+sqlContext.sql('select user_id, count(distinct(review_id)) as NumberOfReviews from reviews group by user_id order by NumberOfReviews desc').show() #6c
+
+

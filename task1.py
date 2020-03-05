@@ -42,8 +42,6 @@ distinct_top_users_friendships_rdd = yelp_top_users_friendship_graph.map(lambda 
 count3_friends_rdd = sc.parallelize([distinct_top_users_friendships_rdd.count()])
 yelp_top_users_friendship_graph.unpersist()
 
-
-#count_rdd.collect().saveAsTextFile(folder_name)
 print(count_business_rdd.collect()[0])
 print(count2_top_rdd.collect()[0])
 print(count3_friends_rdd.collect()[0])
