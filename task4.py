@@ -42,7 +42,7 @@ mean_in = total_connections / count_in
 median_out = np.median(nodes_out_degrees.values().collect())
 median_in = np.median(nodes_in_degrees.values().collect())
 
-
+s = sorted(nodes_out_degrees.values().collect())
 
 yelp_top_users_friendship_graph.unpersist()
 
@@ -52,3 +52,5 @@ yelp_top_users_friendship_graph.unpersist()
 #print("b2) Mean of out degrees in friendships graph: {}".format(mean_out))
 print("b3) Median of in degrees in friendships graph: {}".format(median_in))
 print("b4) Median of out degrees in friendships graph: {}".format(median_out))
+
+s.saveAsTextFile(folder_name + "asd.csv")

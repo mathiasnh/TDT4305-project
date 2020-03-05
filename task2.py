@@ -1,6 +1,5 @@
 from pyspark import SparkContext, SparkConf
 from datetime import datetime
-#from task1 import remove_header
 import csv
 import base64
 from math import sqrt
