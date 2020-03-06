@@ -10,7 +10,8 @@ def remove_header(csv):
 conf = SparkConf().setAppName("YelpReviews").setMaster("local")
 sc = SparkContext(conf=conf)
 
-folder_name = "./results/"
+data_folder_name = "./data/"
+results_folder_name = "./results/"
 
 input_file_name_1 = "yelp_businesses.csv"
 
@@ -18,7 +19,7 @@ output_file_name_3a = "result_3a.csv"
 output_file_name_3c = "result_3c.csv"
 
 
-yelp_businesses = remove_header(sc.textFile(folder_name + input_file_name_1))
+yelp_businesses = remove_header(sc.textFile(data_folder_name + input_file_name_1))
 
 yelp_businesses_rdd = yelp_businesses.map(lambda line: line.split('\t'))
 
@@ -44,8 +45,8 @@ geo_cen = avg_geo.map(lambda postal_lat_lon: (postal_lat_lon[0], postal_lat_lon[
 yelp_businesses_rdd.unpersist()
 
 
-#result_a.saveAsTextFile(folder_name + output_file_name_3a)
-#geo_cen.saveAsTextFile(folder_name + output_file_name_3c)
+#result_a.saveAsTextFile(results_folder_name + output_file_name_3a)
+#geo_cen.saveAsTextFile(results_folder_name + output_file_name_3c)
 print("a) Average number of stars per review for each city: {}".format(result_a.collect()))
 print("b) Top 10 categories: {}".format(categories.takeOrdered(10, key=lambda x: -x[1])))
-aprint("c) Geographic center for each postal code: {}".format(geo_cen.collect()))
+print("c) Geographic center for each postal code: {}".format(geo_cen.collect()))

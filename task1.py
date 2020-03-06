@@ -10,7 +10,7 @@ def remove_header(csv):
 conf = SparkConf().setAppName("YelpReviews").setMaster("local")
 sc = SparkContext(conf=conf)
 
-folder_name = "./results/"
+folder_name = "./data/"
 
 input_file_name_1 = "yelp_businesses.csv"
 input_file_name_2 = "yelp_top_reviewers_with_reviews.csv"
