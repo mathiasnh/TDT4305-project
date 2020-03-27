@@ -1,6 +1,7 @@
 from pyspark import SparkContext, SparkConf
 import csv
 import base64
+import re
 
 def remove_header(csv):
     csv_header = csv.first()
@@ -11,7 +12,7 @@ conf = SparkConf().setAppName("YelpReviews").setMaster("local")
 sc = SparkContext(conf=conf)
 
 folder_name = "./data/"
-result_folder_name = "./results/"
+result_folder_name = "./results3/"
 
 input_file_name = "yelp_top_reviewers_with_reviews.csv"
 afinn111 = "AFINN-111.txt"
@@ -36,7 +37,7 @@ yelp_top_reviewers_with_reviews = yelp_top_reviewers_with_reviews.map(lambda lin
 
 def polarity(s):
     # Tokenize each review into individual lower cased words
-    split = s.lower().split()
+    split = re.sub(r'[,.?!]','',s).lower().split()
 
     # Remove all stopwords
     removed = filter(lambda x: x not in stopwords, split)
@@ -50,7 +51,7 @@ top_reviewers_rdd = yelp_top_reviewers_with_reviews.map(lambda fields: (fields[2
 # Reducing, sorting by ascending order and taking k elements
 reduced = top_reviewers_rdd.reduceByKey(lambda x, y: x + y).sortBy(lambda x: -x[1]).take(k)
 
-sc.parallelize(reduced).saveAsTextFile(result_folder_name + output_file_name)
+sc.parallelize(reduced).coalesce(1).saveAsTextFile(result_folder_name + output_file_name)
 
 
 
