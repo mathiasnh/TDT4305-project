@@ -12,7 +12,7 @@ conf = SparkConf().setAppName("YelpReviews").setMaster("local")
 sc = SparkContext(conf=conf)
 
 folder_name = "./data/"
-result_folder_name = "./results3/"
+result_folder_name = "./results/"
 
 input_file_name = "yelp_top_reviewers_with_reviews.csv"
 afinn111 = "AFINN-111.txt"
@@ -52,6 +52,3 @@ top_reviewers_rdd = yelp_top_reviewers_with_reviews.map(lambda fields: (fields[2
 reduced = top_reviewers_rdd.reduceByKey(lambda x, y: x + y).sortBy(lambda x: -x[1]).take(k)
 
 sc.parallelize(reduced).coalesce(1).saveAsTextFile(result_folder_name + output_file_name)
-
-
-
