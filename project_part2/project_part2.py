@@ -49,6 +49,9 @@ def polarity(s):
 top_reviewers_rdd = yelp_top_reviewers_with_reviews.map(lambda fields: (fields[2], polarity(base64.b64decode(fields[3]))))
 
 # Reducing, sorting by ascending order and taking k elements
-reduced = top_reviewers_rdd.reduceByKey(lambda x, y: x + y).sortBy(lambda x: -x[1]).take(k)
+reduced = top_reviewers_rdd.reduceByKey(lambda x, y: x + y).sortBy(lambda x: -x[1])
 
-sc.parallelize(reduced).coalesce(1).saveAsTextFile(result_folder_name + output_file_name)
+# Add indexes to all RDD elements and use filter to only return a specified amount k
+filtered_reduced = reduced.zipWithIndex().filter(lambda x: x[1] < k).map(lambda x: x[0])
+
+filtered_reduced.repartition(1).saveAsTextFile(result_folder_name + output_file_name)
